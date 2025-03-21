@@ -22,7 +22,8 @@ namespace Demo.PL
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews()
+                 .AddDataAnnotationsLocalization();
             builder.Services.AddDbContext<ApplicationDbContext>((options =>
 
 

@@ -34,7 +34,7 @@ namespace Demo.DAL.Repositories
         public IEnumerable<Department> GetAll(bool AsNoTracking = true)
         {
             if (AsNoTracking)
-                return _Context.Departments.AsNoTracking().ToList(); //detached
+                return _Context.Departments.AsNoTracking().Where(D => !D.IsDeleted).ToList(); //detached
 
             return _Context.Departments.ToList(); //unchanged
         }
