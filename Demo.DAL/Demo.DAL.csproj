@@ -9,6 +9,8 @@
   <ItemGroup>
     <Folder Include="Presistance\Data\DataSeed\" />
     <Folder Include="Presistance\Data\Migrations\" />
+    <Folder Include="Presistance\Repositories\Classes\" />
+    <Folder Include="Presistance\Repositories\Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>

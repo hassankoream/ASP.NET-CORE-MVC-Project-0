@@ -1,6 +1,10 @@
 ﻿using Demo.BLL.Services.Deparment;
 using Demo.DAL.Presistance.Data;
+<<<<<<< Updated upstream
 using Demo.DAL.Repositories;
+=======
+using Demo.PL.ViewModels.Department;
+>>>>>>> Stashed changes
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;

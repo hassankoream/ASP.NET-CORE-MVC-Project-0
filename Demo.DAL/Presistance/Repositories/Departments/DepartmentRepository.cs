@@ -4,28 +4,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Demo.DAL.Entities.Departments;
-using Demo.DAL.Presistance;
 using Demo.DAL.Presistance.Data;
+using Demo.DAL.Presistance.Repositories.Generic;
 
-namespace Demo.DAL.Repositories
+namespace Demo.DAL.Presistance.Repositories.Departments
 {
-    public class DepartmentRepository: IDepartmentRepository
+    public class DepartmentRepository : GenericRepository<Department>, IDepartmentRepository
     {
+        public DepartmentRepository(ApplicationDbContext applicationDbContext) : base(applicationDbContext)
+        {
+
+        }
+
+
+
 
         /*
-        //We need to use DbContext in order to get elements from DB.
+//We need to use DbContext in order to get elements from DB.
 
-        //ApplicationDbContext context = new ApplicationDbContext(); //this is not Good, we must use Dependency Inversion
-        //Context Life time is depend on the Life time of the object from type DepartmentRepository.
-        //the Second problem that you will use Context constructor that take options as a paramter, then the options now depend again on the object.
-        //What is the Sol?
-         there is a common solution called Constructor Injection
+//ApplicationDbContext context = new ApplicationDbContext(); //this is not Good, we must use Dependency Inversion
+//Context Life time is depend on the Life time of the object from type DepartmentRepository.
+//the Second problem that you will use Context constructor that take options as a paramter, then the options now depend again on the object.
+//What is the Sol?
+there is a common solution called Constructor Injection
 
 
-         
-         */
-        private readonly ApplicationDbContext _Context;
 
+<<<<<<< Updated upstream
         public DepartmentRepository(ApplicationDbContext context) //Injection
         {
             _Context = context;
@@ -35,40 +40,54 @@ namespace Demo.DAL.Repositories
         {
             if (AsNoTracking)
                 return _Context.Departments.AsNoTracking().ToList(); //detached
+=======
+// */
+        //private readonly ApplicationDbContext _Context;
+>>>>>>> Stashed changes
 
-            return _Context.Departments.ToList(); //unchanged
-        }
+        //public DepartmentRepository(ApplicationDbContext context) //Injection
+        //{
+        //    _Context = context;
 
-        //Get
-        public Department? GetById(int Id)
-        {
-            //return _Context.Departments.Local.FirstOrDefault(D => D.Id == Id);
-            return _Context.Departments.Find(Id); //Search Locally , In case Found  => Return , else => search database.
+        //}
+        //public IEnumerable<Department> GetAll(bool AsNoTracking = true)
+        //{
+        //    if (AsNoTracking)
+        //        return _Context.Departments.AsNoTracking().Where(D => !D.IsDeleted).ToList(); //detached
 
-        }
-        public int AddDeparment(Department department)
-        {
-            _Context.Departments.Add(department); //Save Locally
-            int RowAffected = _Context.SaveChanges(); //Apply Remotely
-            return RowAffected;
-        }
-        public int UpdateDeparment(Department department)
-        {
-            _Context.Departments.Update(department); //Modified
-            int RowAffected = _Context.SaveChanges(); //Unchanged
-            return RowAffected;
-        }
+        //    return _Context.Departments.ToList(); //unchanged
+        //}
 
-        public int DeleteDeparment(Department department)
-        {
-            _Context.Departments.Remove(department); //Deleted
-            return _Context.SaveChanges(); //untrack
-        }
+        ////Get
+        //public Department? GetById(int Id)
+        //{
+        //    //return _Context.Departments.Local.FirstOrDefault(D => D.Id == Id);
+        //    return _Context.Departments.Find(Id); //Search Locally , In case Found  => Return , else => search database.
 
-        public IQueryable<Department> GetAllQueryable()
-        {
-            return _Context.Departments;
-        }
+        //}
+        //public int AddDepartment(Department department)
+        //{
+        //    _Context.Departments.Add(department); //Save Locally
+        //    int RowAffected = _Context.SaveChanges(); //Apply Remotely
+        //    return RowAffected;
+        //}
+        //public int UpdateDepartment(Department department)
+        //{
+        //    _Context.Departments.Update(department); //Modified
+        //    int RowAffected = _Context.SaveChanges(); //Unchanged
+        //    return RowAffected;
+        //}
+
+        //public int DeleteDepartment(Department department)
+        //{
+        //    _Context.Departments.Remove(department); //Deleted
+        //    return _Context.SaveChanges(); //untrack
+        //}
+
+        //public IQueryable<Department> GetAllQueryable()
+        //{
+        //    return _Context.Departments;
+        //}
 
 
 

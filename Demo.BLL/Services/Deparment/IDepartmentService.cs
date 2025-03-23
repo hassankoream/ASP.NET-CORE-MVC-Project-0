@@ -12,8 +12,8 @@ namespace Demo.BLL.Services.Deparment
         IEnumerable<DepartmentToReturnDto> GetAllDeparments();
         DepartmentDetailsToReturnDto? GetDepartmentById(int Id);
 
-        int CreateDepartment(DepartmentToCreateDto deparment);
-        int UpdateDepartment(DepartmentToUpdateDto deparment);
+        int CreateDepartment(DepartmentToCreateDto department);
+        int UpdateDepartment(DepartmentToUpdateDto department);
         bool DeleteDepartment(int Id);
     }
 }
