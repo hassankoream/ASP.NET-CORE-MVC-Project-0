@@ -11,8 +11,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.BLL", "Demo.BLL\Demo.B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notes", "Notes", "{B92261AD-6E58-46DB-AC56-D8EE866209BF}"
 	ProjectSection(SolutionItems) = preProject
+<<<<<<< HEAD
 		SessionNotes03.cs = SessionNotes03.cs
 		SessionNotes04.cs = SessionNotes04.cs
+=======
+<<<<<<< Updated upstream
+		Session-01.txt = Session-01.txt
+=======
+		CommonErrors.cs = CommonErrors.cs
+		SessionNotes03.cs = SessionNotes03.cs
+		SessionNotes04.cs = SessionNotes04.cs
+		SessionNotes05.cs = SessionNotes05.cs
+>>>>>>> Stashed changes
+>>>>>>> session05
 	EndProjectSection
 EndProject
 Global

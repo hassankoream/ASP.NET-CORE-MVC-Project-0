@@ -63,7 +63,11 @@ public class Class1
         4- Add Class Library Named (ProjectName.BLL) BLL: Business Logic Layer
         5- Add project Reference From DAL Inside BLL
         6- Add Project Refeerenc From BLL Inside PL
+<<<<<<< HEAD
         7- Add GlobalUsing Class Inside Eac Project to use Namespaces globally
+=======
+        7- Add GlobalUsing Class Inside Each Project to use Namespaces globally
+>>>>>>> session05
         8- Steps in DAL Project:
             8.1- Add Microsoft.EntityFrameworkCore.SqlServer package
             8.2- Add Entities(Models) Folder which has the BasicEntityClass for All Models and Folder for each Model
@@ -130,7 +134,11 @@ public class Class1
         #region Edit
         /*
          
+<<<<<<< HEAD
          In case Dto reuren properties you don't need? the Clean Solution is to Add ViewModel.
+=======
+         In case Dto return properties you don't need? the Clean Solution is to Add ViewModel.
+>>>>>>> session05
         ViewModel is a class that has only the properties you want to show from the DTO.
          
          */

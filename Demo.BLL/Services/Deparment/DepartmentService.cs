@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Demo.BLL.DTOs.Department;
-using Demo.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Demo.DAL.Entities;
 using Demo.DAL.Entities.Departments;
-using Demo.DAL.Presistance;
+using Demo.DAL.Presistance.Repositories.Departments;
 
 namespace Demo.BLL.Services.Deparment
 {
@@ -37,7 +36,8 @@ namespace Demo.BLL.Services.Deparment
             //        CreationDate = department.CreationDate,
             //    };
             //}
-            var departments = _departmentRepository.GetAllQueryable().Select(department => new DepartmentToReturnDto()
+            //Manual Mapping
+            var departments = _departmentRepository.GetAllQueryable().Where(D => !D.IsDeleted).Select(department => new DepartmentToReturnDto()
             {
                 Id = department.Id,
                 Code = department.Code,
@@ -94,7 +94,7 @@ namespace Demo.BLL.Services.Deparment
                 LastModifiedOn = DateTime.UtcNow,
                 
             };
-            int rowAffected = _departmentRepository.AddDeparment(departmentCreated);
+            int rowAffected = _departmentRepository.AddEntity(departmentCreated);
             return rowAffected;
         }
         public int UpdateDepartment(DepartmentToUpdateDto department)
@@ -113,7 +113,7 @@ namespace Demo.BLL.Services.Deparment
                 LastModifiedOn = DateTime.UtcNow,
 
             };
-            int rowAffected = _departmentRepository.UpdateDeparment(departmentUpdated);
+            int rowAffected = _departmentRepository.UpdateEntity(departmentUpdated);
             return rowAffected;
         }
 
@@ -122,7 +122,7 @@ namespace Demo.BLL.Services.Deparment
             var department = _departmentRepository.GetById(Id);
             if (department is not null)
             {
-                int rowsAffected = _departmentRepository.DeleteDeparment(department);
+                int rowsAffected = _departmentRepository.DeleteEntity(department);
                 return rowsAffected> 0;
                 
             }

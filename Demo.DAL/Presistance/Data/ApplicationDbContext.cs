@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Demo.DAL.Entities.Departments;
+using Demo.DAL.Entities.Employees;
 
 namespace Demo.DAL.Presistance.Data
 {
@@ -43,6 +44,7 @@ namespace Demo.DAL.Presistance.Data
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Employee> Employees { get; set; }
 
 
         /*

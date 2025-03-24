@@ -1,7 +1,11 @@
 ﻿using Demo.BLL.Services.Deparment;
+using Demo.BLL.Services.Employee;
+using Demo.DAL.Entities.Departments;
 using Demo.DAL.Presistance;
 using Demo.DAL.Presistance.Data;
-using Demo.DAL.Repositories;
+using Demo.DAL.Presistance.Repositories.Departments;
+using Demo.DAL.Presistance.Repositories.Employees;
+using Demo.DAL.Presistance.Repositories.Generic;
 using Microsoft.EntityFrameworkCore;
 namespace Demo.PL
 {
@@ -35,6 +39,9 @@ namespace Demo.PL
 
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+
 
             var app = builder.Build();
 
