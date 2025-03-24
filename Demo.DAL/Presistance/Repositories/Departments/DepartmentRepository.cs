@@ -46,8 +46,7 @@ there is a common solution called Constructor Injection
 =======
 // */
         //private readonly ApplicationDbContext _Context;
->>>>>>> Stashed changes
->>>>>>> session05
+
 
         //public DepartmentRepository(ApplicationDbContext context) //Injection
         //{
