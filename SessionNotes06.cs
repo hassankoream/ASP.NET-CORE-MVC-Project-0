@@ -70,7 +70,135 @@ Would you like me to explain any part in more detail? 🚀
         - open wwwroot/lib/Jquery/: then drag Jqueryvalidations to the create and edit view, in order to make client side vaildation
         - Add it as a section to call it anytime, anywhere you need, not just at @RenderBody().
         - Add it JQuery Vaildation after JQuery scripts.  @await RenderSectionAsync("ValidationScripts", required: false)
-        - 
+        - Add Inisde wwwroot/js/js.site a few lines to help user udnderstand what is missing in the form [$(document).ready(function () {
+    $('form input, form select, form textarea').on('blur', function () {
+        $(this).vaild();
+    });
+});]
+        -
+         
+         */
+        #endregion
+
+        #region 3 - AntiForgeryToken [Action Filter]
+
+        /*
+         
+        - AntiForgeryToken is generted inside the Form with the help of ASP
+        - But Developer could send requests through other tools like postman
+        - to avoid this we we will data annotation on the post Actions inside the controllers [ValidateAntiForgeryToken]
+        -In order
+        
+        
+        
+        
+        ### **What is `AntiForgeryToken` in ASP.NET Core Forms?**
+`AntiForgeryToken` is a security mechanism in **ASP.NET Core** that helps protect web applications from **Cross-Site Request Forgery (CSRF) attacks**.
+
+### **CSRF Attack Overview**
+A **CSRF attack** tricks an authenticated user into making unintended requests to a web application. For example:
+- A user logs into a banking website.
+- The user unknowingly visits a malicious site that submits a fund transfer request using their **authenticated session**.
+- The banking website processes the request because the user is already logged in.
+
+To prevent this, ASP.NET Core provides **Anti-Forgery Tokens** to ensure that form submissions are coming from trusted sources.
+
+---
+
+### **How `AntiForgeryToken` Works**
+ASP.NET Core generates two tokens:
+1. **A hidden form field (`__RequestVerificationToken`)** stored in the HTML form.
+2. **A cookie token** stored in the user's browser.
+
+When the form is submitted:
+- The server **validates** if both tokens match.
+- If they don’t match (or are missing), the request is **rejected**.
+
+---
+
+### **How to Use `AntiForgeryToken` in ASP.NET Core**
+#### **1️⃣ Add `@Html.AntiForgeryToken()` in the Razor View**
+In **Razor Pages (CSHTML)**, include the token inside your `<form>`:
+```html
+<form asp-action="SubmitForm" asp-controller="Home" method="post">
+    @Html.AntiForgeryToken()
+    <input type="text" name="username" placeholder="Enter name">
+    <button type="submit">Submit</button>
+</form>
+```
+🔹 This generates a **hidden input field** with the CSRF token.
+
+---
+
+#### **2️⃣ Enable CSRF Protection in the Controller**
+In the corresponding **controller action**, add `[ValidateAntiForgeryToken]` to enforce CSRF validation:
+```csharp
+[HttpPost]
+[ValidateAntiForgeryToken]
+public IActionResult SubmitForm(string username)
+{
+    // Process form data securely
+    return View();
+}
+```
+🔹 If the token is missing or invalid, ASP.NET **rejects the request**.
+
+---
+
+### **Alternative: Implicit Token in Razor Pages**
+If you're using **ASP.NET Core Razor Pages**, CSRF protection is **automatically enabled** when using the `form` tag helper:
+```html
+<form method="post">
+    <input type="text" name="username" placeholder="Enter name">
+    <button type="submit">Submit</button>
+</form>
+```
+🔹 Here, **ASP.NET automatically adds** the Anti-Forgery token.
+
+---
+
+### **Handling CSRF in AJAX Requests**
+If you send **AJAX requests**, you need to include the token manually in the headers.
+
+#### **1️⃣ Add the Anti-Forgery Token to the HTML**
+```html
+<input type="hidden" id="csrfToken" name="__RequestVerificationToken" value="@Html.AntiForgeryToken()" />
+```
+
+#### **2️⃣ Include Token in AJAX Request**
+```javascript
+$.ajax({
+    url: '/Home/SubmitForm',
+    type: 'POST',
+    data: { username: 'Hassan' },
+    headers: {
+        "RequestVerificationToken": $("#csrfToken").val()
+    },
+    success: function (response) {
+        console.log("Form submitted successfully");
+    }
+});
+```
+
+---
+
+### **Key Takeaways**
+✅ **Prevents CSRF Attacks** by verifying form submissions.  
+✅ **Automatically added in Razor Views** when using `@Html.AntiForgeryToken()`.  
+✅ **Required in POST requests**, but not for GET requests.  
+✅ **For AJAX requests**, you must manually include the token in the headers.  
+
+Would you like me to demonstrate a real example with ASP.NET Core Razor Pages? 🚀
+         
+         
+         */
+        #endregion
+
+        #region 4 - Partial Views
+
+        /*
+         
+         
          
          */
         #endregion

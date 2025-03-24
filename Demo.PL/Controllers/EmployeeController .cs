@@ -13,6 +13,7 @@ namespace Demo.PL.Controllers
     //EmployeeController: Composation [has a Employee service]
     public class EmployeeController : Controller
     {
+        #region Services
         private readonly IEmployeeService _employeeService;
         private readonly ILogger<EmployeeController> _logger;
         private readonly IWebHostEnvironment _env;
@@ -24,8 +25,10 @@ namespace Demo.PL.Controllers
             this._logger = logger;
             _env = env;
         }
+        #endregion
 
 
+        #region Index
         //Request[Get]: baseUrl/Employee/Index
         [HttpGet]
         public IActionResult Index()
@@ -33,7 +36,9 @@ namespace Demo.PL.Controllers
             var employees = _employeeService.GetAllEmployees();
             return View(employees);
         }
+        #endregion
 
+        #region Details
         //Request[Get]: baseUrl/Employee/Details/{id}
         [HttpGet]
         public IActionResult Details(int? id)
@@ -46,7 +51,9 @@ namespace Demo.PL.Controllers
 
             return View(employee);
         }
+        #endregion
 
+        #region Create
         //Request[Get]: baseUrl/Employee/Index/{id}
 
         //Show Client the form to create the object
@@ -59,6 +66,7 @@ namespace Demo.PL.Controllers
 
         //Post what the client submtting
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(EmployeeToCreateDto employeeToCreateDto)
         {
             if (!ModelState.IsValid)
@@ -95,7 +103,9 @@ namespace Demo.PL.Controllers
             }
         }
 
+        #endregion
 
+        #region Delete
         //Show client what is going to be deleted
         //baseUrl/Employee/Delete/{id}
         [HttpGet]
@@ -112,6 +122,7 @@ namespace Demo.PL.Controllers
         //Delete what is the client want
         //baseUrl/Employee/Delete/{id}
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
             var result = _employeeService.DeleteEmployee(id);
@@ -132,12 +143,14 @@ namespace Demo.PL.Controllers
                 message = _env.IsDevelopment() ? ex.Message : "An Error Happend When Deleting the Employee";
 
             }
-          
+
             ModelState.AddModelError(string.Empty, message);
             return RedirectToAction(nameof(Index));
 
         }
+        #endregion
 
+        #region Edit
         //Edit: Request[Get]: baseUrl/Employee/Edit/{id}
         //
         [HttpGet]
@@ -156,7 +169,7 @@ namespace Demo.PL.Controllers
                 Email = employee.Email,
                 Address = employee.Address,
                 Age = employee.Age,
-                Gender = Enum.TryParse<Gender>(employee.Gender,out var empgender)? empgender: default ,
+                Gender = Enum.TryParse<Gender>(employee.Gender, out var empgender) ? empgender : default,
                 EmployeeType = Enum.TryParse<EmployeeType>(employee.EmployeeType, out var emptype) ? emptype : default,
                 HiringDate = employee.HiringDate,
                 Salary = employee.Salary,
@@ -168,6 +181,7 @@ namespace Demo.PL.Controllers
 
         //Edit: request[Post]: baseUrl/Employee/Edit
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, EmployeeToUpdateDto employeeToUpdateDto)
         {
             if (!ModelState.IsValid)
@@ -192,6 +206,7 @@ namespace Demo.PL.Controllers
         }
 
 
+        #endregion
 
 
 

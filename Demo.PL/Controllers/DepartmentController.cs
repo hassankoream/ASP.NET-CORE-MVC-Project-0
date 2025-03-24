@@ -15,6 +15,8 @@ namespace Demo.PL.Controllers
     //DepartmentController: Composation [has a department service]
     public class DepartmentController : Controller
     {
+        #region Services
+
         private readonly IDepartmentService _departmentService;
         private readonly ILogger<DepartmentController> _logger;
         private readonly IWebHostEnvironment _env;
@@ -26,7 +28,9 @@ namespace Demo.PL.Controllers
             this._logger = logger;
             _env = env;
         }
+        #endregion
 
+        #region Index
         //Action => Master Action
 
         [HttpGet] //Defualt
@@ -35,7 +39,9 @@ namespace Demo.PL.Controllers
             var departments = _departmentService.GetAllDeparments();
             return View(departments);
         }
+        #endregion
 
+        #region Create
         //Show the Form with Get the Form
         [HttpGet]
         public IActionResult Create()
@@ -45,6 +51,7 @@ namespace Demo.PL.Controllers
 
         //Post the Data from View Form to Controller 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(DepartmentToCreateDto departmentToCreateDto)
         {
             if (!ModelState.IsValid)
@@ -80,6 +87,8 @@ namespace Demo.PL.Controllers
         }
 
 
+        #endregion
+        #region Details
         //GetDeatils
         [HttpGet]
         public IActionResult Details(int? Id)
@@ -91,7 +100,10 @@ namespace Demo.PL.Controllers
                 return NotFound();//404
             return View(department);
         }
+        #endregion
 
+
+        #region Edit
 
         //Edit Form
         [HttpGet]
@@ -117,6 +129,7 @@ namespace Demo.PL.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, DepartmentEditViewModel departmentEditViewModel)
         {
             if (!ModelState.IsValid)
@@ -149,7 +162,9 @@ namespace Demo.PL.Controllers
 
         }
 
+        #endregion
 
+        #region Delete
         //Get to show client what he is going to delete
         [HttpGet]
         public IActionResult Delete(int? id)
@@ -164,6 +179,7 @@ namespace Demo.PL.Controllers
         }
         //Post the Action Delete
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
             //id will never be null, we came from Delete view get!
@@ -173,24 +189,25 @@ namespace Demo.PL.Controllers
             var message = string.Empty;
             try
             {
-                if(result)
+                if (result)
                     return RedirectToAction(nameof(Index));
                 message = "An Error Happend When Deleting the Department";
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 message = ex.Message;
                 _logger.LogError(ex, message);
 
-                message = _env.IsDevelopment()? ex.Message: "An Error Happend When Deleting the Department";
+                message = _env.IsDevelopment() ? ex.Message : "An Error Happend When Deleting the Department";
 
             }
             //var department = _departmentService.GetDepartmentById(id);
             //return View(nameof(Index));
             ModelState.AddModelError(string.Empty, message);
             return RedirectToAction(nameof(Index));
-        }
+        } 
+        #endregion
 
     }
 }
