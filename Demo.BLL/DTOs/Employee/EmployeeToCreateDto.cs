@@ -11,8 +11,8 @@ namespace Demo.BLL.DTOs.Employee
     public class EmployeeToCreateDto
     {
         [Required]
-        [MaxLength(50, ErrorMessage ="Max Lenght should be 50 Characters")]
-        [MinLength(5, ErrorMessage ="Min Lenght should be 5 Characters")]
+        [MaxLength(50, ErrorMessage ="Max Length should be 50 Characters")]
+        [MinLength(5, ErrorMessage ="Min Length should be 5 Characters")]
         public string Name { get; set; } = null!;
 
 

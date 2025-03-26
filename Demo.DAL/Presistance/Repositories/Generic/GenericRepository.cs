@@ -54,8 +54,8 @@ namespace Demo.DAL.Presistance.Repositories.Generic
         public int DeleteEntity(T entity)
         {
             //_Context.Set<T>().Remove(entity); //Deleted
-            //return _Context.SaveChanges(); //untrack
-            //IsDelete = true. Why? incase you need to recover
+            //return _Context.SaveChanges(); //untracked
+            //IsDelete = true. Why? in case you need to recover
 
             entity.IsDeleted = true;
             _Context.Set<T>().Update(entity); //Modified

@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<EmployeeToReturnDto>
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
 }
 <h1>All Employees</h1>
 <br />
@@ -37,7 +37,18 @@
 					<td>@Html.DisplayFor(E => employee.Salary)</td>
 					<td>@Html.DisplayFor(E => employee.IsActive)</td>
 					<td>@Html.DisplayFor(E => employee.Gender)</td>
-					<td>
+					@{
+						/*	@* 2nd Way*@
+					@{
+					Html.RenderPartial("_ButtonsPartial", @employee.Id);
+					}
+					@* 3rd Way *@
+					@Html.Partial("_ButtonsPartial", @employee.Id); */
+					}
+						<partial name="_ButtonsPartial" model="@employee.Id"></partial>
+		
+
+					@{/*<td>
 						<a class="btn btn-primary" asp-controller="Employee" asp-action="Details" asp-route-id="@employee.Id">
 							<i class="fas fa-eye"></i>    Details
 						</a>
@@ -55,7 +66,9 @@
 						<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
 							<i class="fas fa-trash"></i> Delete
 						</button>
-					</td>
+					</td>*/}
+
+					
 
 				</tr>
 

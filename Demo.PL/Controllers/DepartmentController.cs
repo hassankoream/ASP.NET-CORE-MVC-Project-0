@@ -52,42 +52,84 @@ namespace Demo.PL.Controllers
         //Post the Data from View Form to Controller 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(DepartmentToCreateDto departmentToCreateDto)
+        public IActionResult Create(DepartmentViewModel departmentMV)
         {
             if (!ModelState.IsValid)
-                return View(departmentToCreateDto);
+                return View(departmentMV);
             var message = string.Empty;
             try
             {
-                var result = _departmentService.CreateDepartment(departmentToCreateDto);
+                var result = _departmentService.CreateDepartment(new DepartmentToCreateDto()
+                {
+                    Code = departmentMV.Code,
+                    Name = departmentMV.Name,
+                    Description = departmentMV.Description,
+                    CreationDate = departmentMV.CreationDate,
+                });
                 if (result > 0)
                     return RedirectToAction(nameof(Index));
                 else
-                    message = "Departemnt Can not be Created";
+                    message = "Department Can not be Created";
                 ModelState.AddModelError(string.Empty, message);
 
-                return View(departmentToCreateDto);
+                return View(departmentMV);
             }
             catch (Exception ex)
             {
-                //Log Execption
+                //Log Exception
                 _logger.LogError(ex, ex.Message);
                 if (_env.IsDevelopment())
                 {
                     message = ex.Message;
-                    return View(departmentToCreateDto);
+                    return View(departmentMV);
                 }
                 else
                 {
-                    message = "Departemnt Can not be Created";
+                    message = "Department Can not be Created";
                     return View("Error", message);
                 }
 
             }
         }
+        // public IActionResult Create(DepartmentToCreateDto departmentToCreateDto)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return View(departmentToCreateDto);
+        //    var message = string.Empty;
+        //    try
+        //    {
+        //        var result = _departmentService.CreateDepartment(departmentToCreateDto)
+               
+        //        if (result > 0)
+        //            return RedirectToAction(nameof(Index));
+        //        else
+        //            message = "Department Can not be Created";
+        //        ModelState.AddModelError(string.Empty, message);
+
+        //        return View(departmentToCreateDto);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //Log Exception
+        //        _logger.LogError(ex, ex.Message);
+        //        if (_env.IsDevelopment())
+        //        {
+        //            message = ex.Message;
+        //            return View(departmentToCreateDto);
+        //        }
+        //        else
+        //        {
+        //            message = "Department Can not be Created";
+        //            return View("Error", message);
+        //        }
+
+        //    }
+        //}
 
 
         #endregion
+
+
         #region Details
         //GetDeatils
         [HttpGet]
@@ -116,7 +158,7 @@ namespace Demo.PL.Controllers
             var department = _departmentService.GetDepartmentById(Id.Value);
             if (department is null)
                 return NotFound();
-            return View(new DepartmentEditViewModel()
+            return View(new DepartmentViewModel()
             {
                 Code = department.Code,
                 Name = department.Name,
@@ -130,7 +172,7 @@ namespace Demo.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, DepartmentEditViewModel departmentEditViewModel)
+        public IActionResult Edit(int id, DepartmentViewModel departmentEditViewModel)
         {
             if (!ModelState.IsValid)
                 return View(departmentEditViewModel);
@@ -191,7 +233,7 @@ namespace Demo.PL.Controllers
             {
                 if (result)
                     return RedirectToAction(nameof(Index));
-                message = "An Error Happend When Deleting the Department";
+                message = "An Error Happened When Deleting the Department";
 
             }
             catch (Exception ex)
@@ -199,14 +241,14 @@ namespace Demo.PL.Controllers
                 message = ex.Message;
                 _logger.LogError(ex, message);
 
-                message = _env.IsDevelopment() ? ex.Message : "An Error Happend When Deleting the Department";
+                message = _env.IsDevelopment() ? ex.Message : "An Error Happened When Deleting the Department";
 
             }
             //var department = _departmentService.GetDepartmentById(id);
             //return View(nameof(Index));
             ModelState.AddModelError(string.Empty, message);
             return RedirectToAction(nameof(Index));
-        } 
+        }
         #endregion
 
     }

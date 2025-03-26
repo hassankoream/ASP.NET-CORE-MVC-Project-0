@@ -64,13 +64,13 @@ Would you like me to explain any part in more detail? 🚀
 
         /*
         
-        We use Client-Side Validation to prevent too many Invaild requests to the server.
+        We use Client-Side Validation to prevent too many Invalid requests to the server.
         This is not include tools like Postman, attackers still have the chance to send many requests.
         
-        - open wwwroot/lib/Jquery/: then drag Jqueryvalidations to the create and edit view, in order to make client side vaildation
+        - open wwwroot/lib/Jquery/: then drag Jqueryvalidations to the create and edit view, in order to make client side validation
         - Add it as a section to call it anytime, anywhere you need, not just at @RenderBody().
-        - Add it JQuery Vaildation after JQuery scripts.  @await RenderSectionAsync("ValidationScripts", required: false)
-        - Add Inisde wwwroot/js/js.site a few lines to help user udnderstand what is missing in the form [$(document).ready(function () {
+        - Add it JQuery Validation after JQuery scripts.  @await RenderSectionAsync("ValidationScripts", required: false)
+        - Add Inside wwwroot/js/js.site a few lines to help user understand what is missing in the form [$(document).ready(function () {
     $('form input, form select, form textarea').on('blur', function () {
         $(this).vaild();
     });
@@ -84,9 +84,9 @@ Would you like me to explain any part in more detail? 🚀
 
         /*
          
-        - AntiForgeryToken is generted inside the Form with the help of ASP
+        - AntiForgeryToken is generated inside the Form with the help of ASP
         - But Developer could send requests through other tools like postman
-        - to avoid this we we will data annotation on the post Actions inside the controllers [ValidateAntiForgeryToken]
+        - to avoid this we will data annotation on the post Actions inside the controllers [ValidateAntiForgeryToken]
         -In order
         
         
@@ -135,7 +135,7 @@ In the corresponding **controller action**, add `[ValidateAntiForgeryToken]` to 
 ```csharp
 [HttpPost]
 [ValidateAntiForgeryToken]
-public IActionResult SubmitForm(string username)
+public IActionResult SubmitForm(string user-name)
 {
     // Process form data securely
     return View();
@@ -198,6 +198,24 @@ Would you like me to demonstrate a real example with ASP.NET Core Razor Pages? �
 
         /*
          
+        In Order to use DRY(Don't Repeat Yourself) we need to use partial view Implementation.
+        if your code is repeated in more tan Module, we should write it in the shared folder, if it is repeated only inside the views of one module we could use it there
+        Add the repeated code to the new partial view, 
+        Now we have to make the original view see the partial one, and need to see if the partial is waiting to bind data or not
+
+        - using partial tag in the main view to bind the partial, and @model in the partial to bind the data 
+        - use _ValidationScriptsPartial to bind the new validation view in order to render inside the page
+        @section VaildationScripts {
+	<partial name="_ValidationScriptsPartial"></partial>
+}
+
+
+        - Saw common Code between Actions in the same Controller, so I decided to use partial-view.
+        - Need to bind Different Model? we decided to move on with one common model for both.
+        - Use ViewBag to send Data like different Action names
+
+
+
          
          
          */

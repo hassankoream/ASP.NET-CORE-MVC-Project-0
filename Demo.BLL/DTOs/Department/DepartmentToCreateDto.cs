@@ -12,7 +12,7 @@ namespace Demo.BLL.DTOs.Department
 
         
         public string Code { get; set; } = null!;
-        [Required(ErrorMessage = "Name is Required, Please enter Name!")] //Custome error message
+        [Required(ErrorMessage = "Name is Required, Please enter Name!")] //Custom error message
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
         [Display(Name = "Created On")]
