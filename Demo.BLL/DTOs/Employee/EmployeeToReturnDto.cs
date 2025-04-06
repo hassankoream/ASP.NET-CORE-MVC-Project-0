@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Demo.DAL.Entities.Common.Enums;
+using Microsoft.AspNetCore.Http;
 
 namespace Demo.BLL.DTOs.Employee
 {
@@ -25,5 +26,10 @@ namespace Demo.BLL.DTOs.Employee
       
         public string Gender { get; set; }
         public string EmployeeType { get; set; }
+
+        public string? Department { get; set; }
+
+        public string? Image { get; set; }
+
     }
 }

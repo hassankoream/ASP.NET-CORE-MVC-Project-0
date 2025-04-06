@@ -1,7 +1,66 @@
-﻿namespace Demo.PL.ViewModels.Employee
-{
-    public class EmployeeEditViewmodel
-    {
+﻿using Demo.DAL.Entities.Common.Enums;
+using System.ComponentModel.DataAnnotations;
 
+namespace Demo.PL.ViewModels.Employee
+{
+    public class EmployeeEditViewModel
+    {
+    
+        [Required]
+        [MaxLength(50, ErrorMessage ="Max Length should be 50 Characters")]
+        [MinLength(5, ErrorMessage ="Min Length should be 5 Characters")]
+        public string Name { get; set; } = null!;
+
+
+
+        [Range(22,30)]
+        [Required(ErrorMessage = "Range is 22 to 30")]
+        public int? Age { get; set; }
+
+
+
+        [RegularExpression(@"^\d{1,5}-[A-Za-z]{1,20}-[A-Za-z]{1,20}-[A-Za-z]{1,20}$",
+       ErrorMessage = "Address must be in the format: 1-5 digits, followed by street (1-20 chars), city (1-20 chars), and country (1-20 chars).")]
+        public string? Address { get; set; }
+
+
+
+
+        [DataType(DataType.Currency)]
+        [Required]
+        public decimal Salary { get; set; }
+
+
+
+
+        [Display(Name="Is Active")]
+        public bool IsActive { get; set; }
+
+
+
+        [EmailAddress]
+        public string? Email { get; set; }
+
+
+
+        [Display(Name= "Phone Number")]
+        [Required]
+        [Phone]
+        public string? PhoneNumber { get; set; }
+
+
+
+        [Display(Name = "Hiring Date")]
+        public DateOnly HiringDate { get; set; }
+
+
+
+        public Gender Gender { get; set; }
+        public EmployeeType EmployeeType { get; set; }
+
+        [Display(Name = "Department")]
+        public int? DepartmentId { get; set; } 
+
+        public IFormFile? Image {  get; set; } 
     }
 }

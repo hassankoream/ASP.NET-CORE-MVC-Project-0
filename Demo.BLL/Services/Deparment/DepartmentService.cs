@@ -8,16 +8,23 @@ using Microsoft.EntityFrameworkCore;
 using Demo.DAL.Entities;
 using Demo.DAL.Entities.Departments;
 using Demo.DAL.Presistance.Repositories.Departments;
+using Demo.DAL.Presistance.UniteOfWork;
 
 namespace Demo.BLL.Services.Deparment
 {
     public class DepartmentService : IDepartmentService
     {
-        private readonly IDepartmentRepository _departmentRepository;
 
-        public DepartmentService(IDepartmentRepository departmentRepository)
+        //private readonly IDepartmentRepository _departmentRepository;
+
+        //public DepartmentService(IDepartmentRepository departmentRepository)
+        //{
+        //    _departmentRepository = departmentRepository;
+        //}
+        private readonly IUnitOfWork _unitOfWork;
+        public DepartmentService(IUnitOfWork unitOfWork)
         {
-            _departmentRepository = departmentRepository;
+            _unitOfWork = unitOfWork;
         }
         public IEnumerable<DepartmentToReturnDto> GetAllDeparments()
         {
@@ -37,7 +44,7 @@ namespace Demo.BLL.Services.Deparment
             //    };
             //}
             //Manual Mapping
-            var departments = _departmentRepository.GetAllQueryable().Where(D => !D.IsDeleted).Select(department => new DepartmentToReturnDto()
+            var departments = _unitOfWork.departmentRepository.GetAllQueryable().Where(D => !D.IsDeleted).Select(department => new DepartmentToReturnDto()
             {
                 Id = department.Id,
                 Code = department.Code,
@@ -57,7 +64,7 @@ namespace Demo.BLL.Services.Deparment
         }
         public DepartmentDetailsToReturnDto? GetDepartmentById(int Id)
         {
-            var department = _departmentRepository.GetById(Id);
+            var department = _unitOfWork.departmentRepository.GetById(Id);
             if (department is not null) //department!= null or department is {}
             {
                 return new DepartmentDetailsToReturnDto()
@@ -92,10 +99,10 @@ namespace Demo.BLL.Services.Deparment
                 CreatedBy = 1,//UserId => Relationship
                 LastModifiedBy = 1, //UserId => Relationship
                 LastModifiedOn = DateTime.UtcNow,
-                
+
             };
-            int rowAffected = _departmentRepository.AddEntity(departmentCreated);
-            return rowAffected;
+            _unitOfWork.departmentRepository.AddEntity(departmentCreated);
+            return _unitOfWork.Complete();
         }
         public int UpdateDepartment(DepartmentToUpdateDto department)
         {
@@ -113,18 +120,23 @@ namespace Demo.BLL.Services.Deparment
                 LastModifiedOn = DateTime.UtcNow,
 
             };
-            int rowAffected = _departmentRepository.UpdateEntity(departmentUpdated);
-            return rowAffected;
+            //int rowAffected = _unitOfWork.departmentRepository.UpdateEntity(departmentUpdated);
+            //return rowAffected;
+            _unitOfWork.departmentRepository.UpdateEntity(departmentUpdated);
+            return _unitOfWork.Complete();
         }
 
         public bool DeleteDepartment(int Id)
         {
-            var department = _departmentRepository.GetById(Id);
+            var departmentRepo = _unitOfWork.departmentRepository;
+            var department = departmentRepo.GetById(Id);
             if (department is not null)
             {
-                int rowsAffected = _departmentRepository.DeleteEntity(department);
-                return rowsAffected> 0;
-                
+                //int rowsAffected = _unitOfWork.departmentRepository.DeleteEntity(department);
+                //return rowsAffected > 0;
+                departmentRepo.DeleteEntity(department);
+                return _unitOfWork.Complete() > 0;
+
             }
             return false;
         }

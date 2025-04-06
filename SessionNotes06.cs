@@ -220,5 +220,47 @@ Would you like me to demonstrate a real example with ASP.NET Core Razor Pages? ð
          
          */
         #endregion
+
+        #region 5 - ViewData Vs ViewBag
+
+        /*
+         
+        ViewData => ViewDataDictionary<string, object>
+        ViewData => ViewDataDictionary<string, object> dynamic
+        View Data & View Bag References the same Dictionary Object if the have the same Key
+        
+        ViewBag.Message ==  ViewData["Message"] = true
+        
+
+        1] Send data from Action to View
+        2] send Data from View to partial view
+        3] send data from view to layout
+
+
+
+        ViewData and ViewBag is associated only with one request and any data inside them will be removed in the next request.
+
+      
+
+
+
+
+
+
+         */
+        #endregion
+
+        #region Temp Data
+
+        /*
+         
+           TempData, Why it is important? need to send notification or data from view to another view, can handle data from request to another request
+        example: request from create to request index holding TempData
+
+        1]Send Data from Action to Action
+        2]Send Data from Action to View
+         
+         */
+        #endregion
     }
 }

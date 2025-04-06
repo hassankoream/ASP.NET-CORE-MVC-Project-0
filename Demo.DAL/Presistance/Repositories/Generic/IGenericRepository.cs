@@ -14,8 +14,8 @@ namespace Demo.DAL.Presistance.Repositories.Generic
         IQueryable<T> GetAllQueryable();
         T? GetById(int id);
 
-        int AddEntity(T entity);
-        int UpdateEntity(T entity);
-        int DeleteEntity(T entity);
+        void AddEntity(T entity);
+        void UpdateEntity(T entity);
+        void DeleteEntity(T entity);
     }
 }

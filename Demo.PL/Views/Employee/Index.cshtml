@@ -7,16 +7,29 @@
 <br />
 
 <a class="btn btn-primary" asp-controller="Employee" asp-action="Create">Create Employee</a>
+<br />
+<div class="">
+	<form class="row offset-2" asp-action="Index" method="get">
+		<div class="col">
+			<input class="form-control" type="text" name="SearchValue" placeholder="Search by Employee Name" />
+		</div>
+		<div class="col">
+			<input type="submit" class="btn btn-outline-dark " value="search" />
+		</div>
+	</form>
+</div>
 @if (Model.Count() > 0)
 {
 	<table class="table table-striped table-hover mt-3">
 		<thead class="text-center">
 			<tr>
+				<th>@Html.DisplayNameFor(E => E.Image)</th>
 				<th>@Html.DisplayNameFor(E => E.Name)</th>
 				<th>@Html.DisplayNameFor(E => E.Email )</th>
 				<th>@Html.DisplayNameFor(E => E.EmployeeType)</th>
 				<th>@Html.DisplayNameFor(E => E.Age)</th>
 				<th>@Html.DisplayNameFor(E => E.Salary)</th>
+				<th>@Html.DisplayNameFor(E => E.Department)</th>
 				<th>@Html.DisplayNameFor(E => E.IsActive)</th>
 				<th>@Html.DisplayNameFor(E => E.Gender)</th>
 				<th>Details</th>
@@ -30,11 +43,16 @@
 			{
 				<tr>
 
+					<td>
+						<img src="~/files/images/@(employee.Image is not null? employee.Image : "NotFound" )" class="rounded " alt="@(employee.Name is not null? employee.Name: "Employee Picture") " width="40" height="40" />
+
+					</td>
 					<td>@Html.DisplayFor(E => employee.Name)</td>
 					<td>@Html.DisplayFor(E => employee.Email)</td>
 					<td>@Html.DisplayFor(E => employee.EmployeeType)</td>
 					<td>@Html.DisplayFor(E => employee.Age)</td>
 					<td>@Html.DisplayFor(E => employee.Salary)</td>
+					<td>@Html.DisplayFor(E => employee.Department)</td>
 					<td>@Html.DisplayFor(E => employee.IsActive)</td>
 					<td>@Html.DisplayFor(E => employee.Gender)</td>
 					@{
@@ -73,7 +91,7 @@
 				</tr>
 
 				@* Delete Modal *@
-				<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal fade" id="deleteModal-@employee.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">

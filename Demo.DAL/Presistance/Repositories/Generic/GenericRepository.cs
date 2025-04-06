@@ -38,20 +38,20 @@ namespace Demo.DAL.Presistance.Repositories.Generic
             // Ensure the entity is not deleted before returning it
             return (entity != null && !entity.IsDeleted) ? entity : null;
         }
-        public int AddEntity(T entity)
+        public /*int*/ void AddEntity(T entity)
         {
             _Context.Set<T>().Add(entity); //Save Locally
             int RowAffected = _Context.SaveChanges(); //Apply Remotely
-            return RowAffected;
+            //return RowAffected;
         }
-        public int UpdateEntity(T entity)
+        public /*int*/ void UpdateEntity(T entity)
         {
             _Context.Set<T>().Update(entity); //Modified
             int RowAffected = _Context.SaveChanges(); //Unchanged
-            return RowAffected;
+            //return RowAffected;
         }
 
-        public int DeleteEntity(T entity)
+        public /*int*/ void DeleteEntity(T entity)
         {
             //_Context.Set<T>().Remove(entity); //Deleted
             //return _Context.SaveChanges(); //untracked
@@ -59,7 +59,7 @@ namespace Demo.DAL.Presistance.Repositories.Generic
 
             entity.IsDeleted = true;
             _Context.Set<T>().Update(entity); //Modified
-            return  _Context.SaveChanges(); //Unchanged
+            //return  _Context.SaveChanges(); //Unchanged
              
 
         }

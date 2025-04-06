@@ -1,9 +1,30 @@
 ﻿@model IEnumerable<DepartmentToReturnDto>
 @{
 	ViewData["Title"] = "Index";
+	var dept = ViewData["Message02"] as DepartmentDetailsToReturnDto;
 
 }
 
+@* <div class="alert alert-danger">
+	@ViewData["Message01"]
+
+
+</div>
+<div class="alert alert-success">
+	@if (dept is not null)
+	{
+		@dept.Name
+	}
+
+</div>
+<div>
+	@ViewBag.message03.Name
+</div> *@
+@if (@TempData["Message"] is not null)
+{
+
+<h2 class="alert alert-danger">@TempData["Message"]</h2>
+}
 <h1>All Departments</h1>
 <br />
 <br />
@@ -55,19 +76,16 @@
 							<i class="fas fa-trash"></i> Delete
 						</button>
 					</td>*/}
-					<td>
-						<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-							<i class="fas fa-trash"></i> Delete
-						</button>
-					</td>
 				
-
+				
+			
 
 
 				</tr>
 
+				
 				@* Delete Modal *@
-				<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal fade" id="deleteModal-@department.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -86,7 +104,6 @@
 						</div>
 					</div>
 				</div>
-			
 			}
 
 		</tbody>

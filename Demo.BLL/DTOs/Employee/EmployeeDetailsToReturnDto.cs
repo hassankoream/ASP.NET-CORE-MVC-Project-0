@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Demo.DAL.Entities.Common.Enums;
+using Microsoft.AspNetCore.Http;
 
 namespace Demo.BLL.DTOs.Employee
 {
@@ -30,5 +31,10 @@ namespace Demo.BLL.DTOs.Employee
         public DateTime CreatedOn { get; set; }
         public int LastModifiedBy { get; set; }
         public DateTime LastModifiedOn { get; set; }
+        public string? Department { get; set; }
+
+        public string? Image { get; set; }
+
+
     }
 }

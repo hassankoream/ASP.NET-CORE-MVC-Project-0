@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Demo.DAL.Entities.Common.Enums;
+using Demo.DAL.Entities.Departments;
 
 namespace Demo.DAL.Entities.Employees
 {
@@ -22,5 +23,9 @@ namespace Demo.DAL.Entities.Employees
         public Gender Gender { get; set; }
         public EmployeeType EmployeeType { get; set; }
 
+        public virtual Department? Department { get; set; }
+        public int? DepartmentId { get; set; }
+
+        public string? ImageName { get; set; } //ImageName
     }
 }

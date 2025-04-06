@@ -1,8 +1,12 @@
-﻿using Demo.BLL.DTOs.Department;
+﻿using AutoMapper;
+using Demo.BLL.DTOs.Department;
 using Demo.BLL.DTOs.Employee;
+using Demo.BLL.Services.Deparment;
 using Demo.BLL.Services.Employee;
 using Demo.DAL.Entities.Common.Enums;
+using Demo.DAL.Entities.Departments;
 using Demo.PL.ViewModels.Department;
+using Demo.PL.ViewModels.Employee;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -15,13 +19,18 @@ namespace Demo.PL.Controllers
     {
         #region Services
         private readonly IEmployeeService _employeeService;
+        private readonly IMapper _autoMapper;
+
+        //private readonly IDepartmentService departmentServices;
         private readonly ILogger<EmployeeController> _logger;
         private readonly IWebHostEnvironment _env;
 
-        public EmployeeController(IEmployeeService employeeService, ILogger<EmployeeController> logger, IWebHostEnvironment env)
+        public EmployeeController(IEmployeeService employeeService/*,IDepartmentService departmentServices*/, IMapper AutoMapper, ILogger<EmployeeController> logger, IWebHostEnvironment env)
         {
             //_EmployeeService = new EmployeeService(new EmployeeRepository(new DAL.Presistance.Data.ApplicationDbContext(new DbContextOptions<ApplicationDbContext>())));
             _employeeService = employeeService;
+            _autoMapper = AutoMapper;
+            //this.departmentServices = departmentServices;
             this._logger = logger;
             _env = env;
         }
@@ -31,9 +40,9 @@ namespace Demo.PL.Controllers
         #region Index
         //Request[Get]: baseUrl/Employee/Index
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string SearchValue)
         {
-            var employees = _employeeService.GetAllEmployees();
+            var employees = _employeeService.GetAllEmployees(SearchValue);
             return View(employees);
         }
         #endregion
@@ -58,33 +67,39 @@ namespace Demo.PL.Controllers
 
         //Show Client the form to create the object
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Create(/*[FromServices] IDepartmentService departmentServices*/)
         {
+            //ViewData["Department"] = departmentServices.GetAllDeparments(); 
             return View();
         }
 
 
-        //Post what the client submtting
+        //Post what the client submitting
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(EmployeeToCreateDto employeeToCreateDto)
+        public IActionResult Create(EmployeeEditViewModel EmployeeVM)
         {
             if (!ModelState.IsValid)
-                return View(employeeToCreateDto);
+                return View(EmployeeVM);
             var message = string.Empty;
             try
             {
-                var result = _employeeService.CreateEmployee(employeeToCreateDto);
+                var departmentToCreated = _autoMapper.Map<EmployeeEditViewModel, EmployeeToCreateDto>(EmployeeVM);
+
+                //with AutoMApper 
+                
+                var result = _employeeService.CreateEmployee(departmentToCreated);
                 if (result > 0)
                 {
-                    return RedirectToAction(nameof(Index));
+                    message = $"Department {EmployeeVM.Name} Created";
+                  
 
                 }
                 else
-                    message = "Departemnt Can not be Created";
+                    message = "Department Can not be Created";
                 ModelState.AddModelError(string.Empty, message);
 
-                return View(employeeToCreateDto);
+                return View(EmployeeVM);
             }
             catch (Exception ex)
             {
@@ -92,12 +107,12 @@ namespace Demo.PL.Controllers
                 if (_env.IsDevelopment())
                 {
                     message = ex.Message;
-                    return View(employeeToCreateDto);
+                    return View(EmployeeVM);
 
                 }
                 else
                 {
-                    message = "Departemnt Can not be Created";
+                    message = "Department Can not be Created";
                     return View("Error", message);
                 }
             }
@@ -162,6 +177,8 @@ namespace Demo.PL.Controllers
             if (employee is null)
                 return NotFound();
 
+            //ViewData["Department"] = departmentServices.GetAllDeparments();
+
             return View(new EmployeeToUpdateDto()
             {
                 Id = id.Value,
@@ -176,6 +193,7 @@ namespace Demo.PL.Controllers
                 PhoneNumber = employee.PhoneNumber,
                 IsActive = employee.IsActive,
             });
+
         }
 
 
@@ -202,6 +220,8 @@ namespace Demo.PL.Controllers
                 message = _env.IsDevelopment() ? ex.Message : "Employee Cannot be Updated";
 
             }
+            //ViewData["Department"] = departmentServices.GetAllDeparments();
+
             return View(employeeToUpdateDto);
         }
 

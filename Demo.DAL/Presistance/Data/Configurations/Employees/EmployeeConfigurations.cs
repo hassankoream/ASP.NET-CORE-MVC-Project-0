@@ -36,6 +36,11 @@ namespace Demo.DAL.Presistance.Data.Configurations.Employees
             //   .ValueGeneratedOnAddOrUpdate()
             //   .HasDefaultValueSql("GETUTCDATE()");
 
+            builder.HasOne(E => E.Department)
+                .WithMany(D => D.Employees)
+                .HasForeignKey(E => E.DepartmentId)
+                .OnDelete(DeleteBehavior.SetNull);
+
 
 
         }

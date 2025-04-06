@@ -1,4 +1,5 @@
-﻿using Demo.BLL.Services.Deparment;
+﻿using Demo.BLL.Common.Service.AttachmentService;
+using Demo.BLL.Services.Deparment;
 using Demo.BLL.Services.Employee;
 using Demo.DAL.Entities.Departments;
 using Demo.DAL.Presistance;
@@ -6,6 +7,8 @@ using Demo.DAL.Presistance.Data;
 using Demo.DAL.Presistance.Repositories.Departments;
 using Demo.DAL.Presistance.Repositories.Employees;
 using Demo.DAL.Presistance.Repositories.Generic;
+using Demo.DAL.Presistance.UniteOfWork;
+using Demo.PL.Mapping.Profiles;
 using Microsoft.EntityFrameworkCore;
 namespace Demo.PL
 {
@@ -33,7 +36,8 @@ namespace Demo.PL
 
 
             //options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings")["DefalutConnection"])
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefalutConnection"))
+            options.UseLazyLoadingProxies()
+            .UseSqlServer(builder.Configuration.GetConnectionString("DefalutConnection"))
             ));
 
 
@@ -41,6 +45,10 @@ namespace Demo.PL
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddTransient<IAttachmentService, AttachmentService>();
+            
+            builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfile()));
 
 
             var app = builder.Build();
