@@ -57,7 +57,7 @@ namespace Demo.BLL.Services.Employee
 
             };
             if (EmployeeDto is not null)
-                employee.ImageName = _attachmentService.Upload(EmployeeDto.Image, "Images");
+                employee.ImageName = _attachmentService.Upload(EmployeeDto.Image, "images");
 
 
             _unitOfWork.EmployeeRepository.AddEntity(employee);

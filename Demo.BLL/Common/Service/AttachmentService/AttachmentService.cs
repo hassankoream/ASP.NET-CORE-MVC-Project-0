@@ -20,7 +20,7 @@ namespace Demo.BLL.Common.Service.AttachmentService
 
             //1] Validate for Extensions { ".png", ".jgp", ".jpeg"}
 
-            var extension = Path.GetExtension(FolderName);
+            var extension = Path.GetExtension(file.FileName);
             if (!_allowedextensions.Contains(extension))
                 return null;
 
@@ -33,7 +33,7 @@ namespace Demo.BLL.Common.Service.AttachmentService
 
             //3] Locate Folder path of the file
             //var FolderPath  = "D:\\2- programming\\Route\\Dot Net\\01-Demos\\06-ASP.NETCORE\\ASP.NET Core-MVC-Project\\Asp-MVC\\Demo.PL\\wwwroot\\files\\images\\"
-            var FolderPath = Path.Combine(Directory.GetCurrentDirectory(), "\\wwwroot\\files",  FolderName);
+            var FolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\files",  FolderName);
 
             //4] Set Unique File Name
             var fileName = $"{Guid.NewGuid()}{extension}";

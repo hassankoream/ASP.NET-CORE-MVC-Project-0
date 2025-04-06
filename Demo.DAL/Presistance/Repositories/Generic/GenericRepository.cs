@@ -41,13 +41,13 @@ namespace Demo.DAL.Presistance.Repositories.Generic
         public /*int*/ void AddEntity(T entity)
         {
             _Context.Set<T>().Add(entity); //Save Locally
-            int RowAffected = _Context.SaveChanges(); //Apply Remotely
+            //int RowAffected = _Context.SaveChanges(); //Apply Remotely
             //return RowAffected;
         }
         public /*int*/ void UpdateEntity(T entity)
         {
             _Context.Set<T>().Update(entity); //Modified
-            int RowAffected = _Context.SaveChanges(); //Unchanged
+            //int RowAffected = _Context.SaveChanges(); //Unchanged
             //return RowAffected;
         }
 

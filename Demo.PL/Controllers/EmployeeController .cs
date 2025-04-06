@@ -91,12 +91,14 @@ namespace Demo.PL.Controllers
                 var result = _employeeService.CreateEmployee(departmentToCreated);
                 if (result > 0)
                 {
-                    message = $"Department {EmployeeVM.Name} Created";
-                  
+                    message = $"Employee {EmployeeVM.Name} Created";
+                    return RedirectToAction(nameof(Index));
+
+
 
                 }
                 else
-                    message = "Department Can not be Created";
+                    message = "Employee Can not be Created";
                 ModelState.AddModelError(string.Empty, message);
 
                 return View(EmployeeVM);
