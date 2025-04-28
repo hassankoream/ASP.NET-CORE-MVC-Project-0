@@ -17,24 +17,24 @@ namespace Demo.DAL.Presistance.Repositories.Generic
             _Context = context;
 
         }
-        public IEnumerable<T> GetAll(bool AsNoTracking = true)
+        public async Task<IEnumerable<T>> GetAllAsync(bool AsNoTracking = true)
         {
             //Get only What is not Deleted
             if (AsNoTracking)
-                return _Context.Set<T>().AsNoTracking().Where(D => !D.IsDeleted).ToList(); //detached
+                return await _Context.Set<T>().AsNoTracking().Where(D => !D.IsDeleted).ToListAsync(); //detached
 
-            return _Context.Set<T>().Where(D => !D.IsDeleted).ToList(); //unchanged
+            return await _Context.Set<T>().Where(D => !D.IsDeleted).ToListAsync(); //unchanged
         }
 
         //Get
-        public T? GetById(int Id)
+        public async Task<T?> GetByIdAsync(int Id)
         {
             //return _Context.Ts.Local.FirstOrDefault(D => D.Id == Id);
           /*  return _Context.Set<T>().Find(Id);*/ //Search Locally , In case Found  => Return , else => search database.
 
             //If Deleted
-            var entity = _Context.Set<T>().Find(Id);
-
+            var entity = await _Context.Set<T>().FindAsync(Id);
+            
             // Ensure the entity is not deleted before returning it
             return (entity != null && !entity.IsDeleted) ? entity : null;
         }

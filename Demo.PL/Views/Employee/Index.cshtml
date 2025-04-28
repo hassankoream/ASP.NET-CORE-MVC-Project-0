@@ -63,7 +63,7 @@
 					@* 3rd Way *@
 					@Html.Partial("_ButtonsPartial", @employee.Id); */
 					}
-						<partial name="_ButtonsPartial" model="@employee.Id"></partial>
+						<partial name="_ButtonsPartial" model="@employee.Id.ToString()"></partial>
 		
 
 					@{/*<td>
@@ -118,7 +118,7 @@
 else
 {
 	<div class="alert alert-info mt-3">
-		<h2>No Deparetment Found!</h2>
+		<h2>No Employees Found!</h2>
 	</div>
 }
 

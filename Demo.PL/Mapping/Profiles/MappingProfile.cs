@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Demo.BLL.DTOs.Department;
 using Demo.BLL.DTOs.Employee;
+using Demo.DAL.Entities.Identity;
 using Demo.PL.ViewModels.Department;
 using Demo.PL.ViewModels.Employee;
+using Demo.PL.ViewModels.Users;
 
 namespace Demo.PL.Mapping.Profiles
 {
@@ -23,6 +25,11 @@ namespace Demo.PL.Mapping.Profiles
             CreateMap<DepartmentDetailsToReturnDto, DepartmentViewModel>();
             CreateMap<DepartmentViewModel, DepartmentToUpdateDto>();
             CreateMap<EmployeeEditViewModel, EmployeeToCreateDto>().ReverseMap();
+            #endregion
+
+            #region User Module
+            CreateMap<UserViewModel, ApplicationUser>().ReverseMap();
+
             #endregion
 
 

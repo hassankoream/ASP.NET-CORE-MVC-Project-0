@@ -4,8 +4,7 @@ using Demo.BLL.Services.Deparment;
 using Demo.DAL.Presistance.Data;
 
 using Demo.PL.ViewModels.Department;
-
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -14,6 +13,9 @@ namespace Demo.PL.Controllers
 {
     //DepartmentController: Inhertiance [is a Controller]
     //DepartmentController: Composation [has a department service]
+
+    //[AllowAnonymous]
+    [Authorize]
     public class DepartmentController : Controller
     {
         #region Services
@@ -37,13 +39,13 @@ namespace Demo.PL.Controllers
         //Action => Master Action
 
         [HttpGet] //Default
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             ViewData["Message01"] = "Hello from view data";
             ViewData["Message02"] = new DepartmentDetailsToReturnDto() { Name = "Dept02" };
             ViewBag.Message03 = new DepartmentDetailsToReturnDto() { Name = "Dept03" };
             //TempData["message"] = "Hello from Temp Data";
-            var departments = _departmentService.GetAllDeparments();
+            var departments = await _departmentService.GetAllDeparmentsAsync();
             return View(departments);
         }
         #endregion
@@ -59,17 +61,17 @@ namespace Demo.PL.Controllers
         //Post the Data from View Form to Controller 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(DepartmentViewModel departmentMV)
+        public async Task<IActionResult> Create(DepartmentViewModel departmentMV)
         {
             if (!ModelState.IsValid)
                 return View(departmentMV);
             var message = string.Empty;
             try
             {
+                //with AutoMApper 
                 var departmentToCreated = _autoMapper.Map<DepartmentViewModel, DepartmentToCreateDto>(departmentMV);
 
-                //with AutoMApper 
-                var result = _departmentService.CreateDepartment(departmentToCreated);
+                var result = await _departmentService.CreateDepartmentAsync(departmentToCreated);
                     
                 //Without AutoMapper
                 //    (new DepartmentToCreateDto()
@@ -152,11 +154,11 @@ namespace Demo.PL.Controllers
         #region Details
         //GetDeatils
         [HttpGet]
-        public IActionResult Details(int? Id)
+        public async Task<IActionResult> Details(int? Id)
         {
             if (Id is null)
                 return BadRequest();//400
-            var department = _departmentService.GetDepartmentById(Id.Value);
+            var department = await _departmentService.GetDepartmentByIdAsync(Id.Value);
             if (department is null)
                 return NotFound();//404
             return View(department);
@@ -168,13 +170,13 @@ namespace Demo.PL.Controllers
 
         //Edit Form
         [HttpGet]
-        public IActionResult Edit(int? Id)
+        public async Task<IActionResult> Edit(int? Id)
         {
             if (Id is null)
             {
                 return BadRequest();
             }
-            var department = _departmentService.GetDepartmentById(Id.Value);
+            var department = await _departmentService.GetDepartmentByIdAsync(Id.Value);
             if (department is null)
                 return NotFound();
 
@@ -197,7 +199,7 @@ namespace Demo.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, DepartmentViewModel departmentEditViewModel)
+        public async Task<IActionResult> Edit(int id, DepartmentViewModel departmentEditViewModel)
         {
             if (!ModelState.IsValid)
                 return View(departmentEditViewModel);
@@ -205,7 +207,7 @@ namespace Demo.PL.Controllers
             try
             {
                 //var departmentUpdated = _autoMapper.Map<DepartmentToUpdateDto>(departmentEditViewModel);
-                var result = _departmentService.UpdateDepartment(new DepartmentToUpdateDto()
+                var result = await _departmentService.UpdateDepartmentAsync(new DepartmentToUpdateDto()
                 {
                     Id = id,
                     Code = departmentEditViewModel.Code,
@@ -234,11 +236,11 @@ namespace Demo.PL.Controllers
         #region Delete
         //Get to show client what he is going to delete
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id is null)
                 return BadRequest();
-            var department = _departmentService.GetDepartmentById(id.Value);
+            var department = await _departmentService.GetDepartmentByIdAsync(id.Value);
             if (department == null)
                 return NotFound();
 
@@ -247,12 +249,12 @@ namespace Demo.PL.Controllers
         //Post the Action Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             //id will never be null, we came from Delete view get!
             //if (id is null)
             //    return BadRequest();
-            var result = _departmentService.DeleteDepartment(id);
+            var result = await _departmentService.DeleteDepartmentAsync(id);
             var message = string.Empty;
             try
             {

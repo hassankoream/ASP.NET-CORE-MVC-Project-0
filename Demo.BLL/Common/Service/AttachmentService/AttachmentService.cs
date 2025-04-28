@@ -15,7 +15,7 @@ namespace Demo.BLL.Common.Service.AttachmentService
 
         //Max size of file = 2MB
         public const int _maxAllowedSize = 2_097_152;
-        public string? Upload(IFormFile file, string FolderName)
+        public async Task<string?> UploadAsync(IFormFile file, string FolderName)
         {
 
             //1] Validate for Extensions { ".png", ".jgp", ".jpeg"}
@@ -46,7 +46,7 @@ namespace Demo.BLL.Common.Service.AttachmentService
             using var fileStream = new FileStream(filePath, FileMode.Create);
 
             //7] Copy file to the stream
-            file.CopyTo(fileStream);
+           await file.CopyToAsync(fileStream);
 
 
             //8] return fileName

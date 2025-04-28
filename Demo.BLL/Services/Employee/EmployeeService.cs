@@ -34,7 +34,7 @@ namespace Demo.BLL.Services.Employee
 
         #region Create
 
-        public int CreateEmployee(EmployeeToCreateDto EmployeeDto)
+        public async Task<int> CreateEmployeeAsync(EmployeeToCreateDto EmployeeDto)
         {
             Demo.DAL.Entities.Employees.Employee employee = new DAL.Entities.Employees.Employee()
             {
@@ -57,23 +57,23 @@ namespace Demo.BLL.Services.Employee
 
             };
             if (EmployeeDto is not null)
-                employee.ImageName = _attachmentService.Upload(EmployeeDto.Image, "images");
+                employee.ImageName = await _attachmentService.UploadAsync(EmployeeDto.Image, "images");
 
 
             _unitOfWork.EmployeeRepository.AddEntity(employee);
-            return _unitOfWork.Complete();
+            return await _unitOfWork.CompleteAsync();
         }
         #endregion
 
         #region Delete
-        public bool DeleteEmployee(int Id)
+        public async Task<bool> DeleteEmployeeAsync(int Id)
         {
             var EmployeeRepo = _unitOfWork.EmployeeRepository;
-            var employee = EmployeeRepo.GetById(Id);
+            var employee = await EmployeeRepo.GetByIdAsync(Id);
             if (employee is not null) //Equivalent to //employee != null | employee is {}
             {
                 EmployeeRepo.DeleteEntity(employee);
-                return _unitOfWork.Complete() > 0;
+                return await _unitOfWork.CompleteAsync() > 0;
             }
 
 
@@ -84,9 +84,9 @@ namespace Demo.BLL.Services.Employee
 
         #region Get All Index
 
-        public IEnumerable<EmployeeToReturnDto> GetAllEmployees(string SearchValue)
+        public async Task<IEnumerable<EmployeeToReturnDto>> GetAllEmployeesAsync(string SearchValue)
         {
-            return _unitOfWork.EmployeeRepository.GetAllQueryable()
+            return await _unitOfWork.EmployeeRepository.GetAllQueryable()
                                     .Include(E => E.Department)
                                     .Where(E => !E.IsDeleted && (string.IsNullOrEmpty(SearchValue) || E.Name.ToLower().Contains(SearchValue.ToLower())))
                                     .Select(employee => new EmployeeToReturnDto()
@@ -103,14 +103,14 @@ namespace Demo.BLL.Services.Employee
                                         Department = employee.Department.Name ?? "NA",
                                         Image = employee.ImageName,
 
-                                    });
+                                    }).ToListAsync();
         }
         #endregion
         #region Details
 
-        public EmployeeDetailsToReturnDto? GetEmployeeById(int Id)
+        public async Task<EmployeeDetailsToReturnDto?> GetEmployeeByIdAsync(int Id)
         {
-            var employee = _unitOfWork.EmployeeRepository.GetById(Id);
+            var employee = await _unitOfWork.EmployeeRepository.GetByIdAsync(Id);
             if (employee is not null)
                 return new EmployeeDetailsToReturnDto()
                 {
@@ -140,7 +140,7 @@ namespace Demo.BLL.Services.Employee
 
         #region Edit
 
-        public int UpdateEmployee(EmployeeToUpdateDto EmployeeDto)
+        public async Task<int> UpdateEmployeeAsync(EmployeeToUpdateDto EmployeeDto)
         {
             var employeeUpdated = new DAL.Entities.Employees.Employee()
             {
@@ -161,11 +161,11 @@ namespace Demo.BLL.Services.Employee
                 DepartmentId = EmployeeDto.DepartmentId,
             };
             if (EmployeeDto is not null)
-                employeeUpdated.ImageName = _attachmentService.Upload(EmployeeDto.Image, "Images");
+                employeeUpdated.ImageName = await _attachmentService.UploadAsync(EmployeeDto.Image, "Images");
 
 
             _unitOfWork.EmployeeRepository.UpdateEntity(employeeUpdated);
-            return _unitOfWork.Complete();
+            return await _unitOfWork.CompleteAsync();
         }
         #endregion
     }

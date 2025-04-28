@@ -17,5 +17,15 @@ public class Class1
 		 if Id not Added to UpdateEntity during the mapping, you will Add new record every time  
 		 
 		 */
+
+		/*
+		 Mapping from entity to another
+		What models do you use
+		Path of folders and names are Case sensitive
+		What is return from the method what is expected
+		 Debug fix all the problems
+		 
+		 
+		 */
     }
 }

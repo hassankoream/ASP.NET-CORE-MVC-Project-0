@@ -7,6 +7,7 @@ using Demo.DAL.Entities.Common.Enums;
 using Demo.DAL.Entities.Departments;
 using Demo.PL.ViewModels.Department;
 using Demo.PL.ViewModels.Employee;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -15,6 +16,7 @@ namespace Demo.PL.Controllers
 {
     //EmployeeController: Inhertiance [is a Controller]
     //EmployeeController: Composation [has a Employee service]
+    [Authorize]
     public class EmployeeController : Controller
     {
         #region Services
@@ -40,9 +42,9 @@ namespace Demo.PL.Controllers
         #region Index
         //Request[Get]: baseUrl/Employee/Index
         [HttpGet]
-        public IActionResult Index(string SearchValue)
+        public async Task<IActionResult> Index(string SearchValue)
         {
-            var employees = _employeeService.GetAllEmployees(SearchValue);
+            var employees = await _employeeService.GetAllEmployeesAsync(SearchValue);
             return View(employees);
         }
         #endregion
@@ -50,11 +52,11 @@ namespace Demo.PL.Controllers
         #region Details
         //Request[Get]: baseUrl/Employee/Details/{id}
         [HttpGet]
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id is null)
                 return BadRequest();
-            var employee = _employeeService.GetEmployeeById(id.Value);
+            var employee =await _employeeService.GetEmployeeByIdAsync(id.Value);
             if (employee is null)
                 return NotFound();
 
@@ -77,7 +79,7 @@ namespace Demo.PL.Controllers
         //Post what the client submitting
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(EmployeeEditViewModel EmployeeVM)
+        public async Task<IActionResult> Create(EmployeeEditViewModel EmployeeVM)
         {
             if (!ModelState.IsValid)
                 return View(EmployeeVM);
@@ -88,7 +90,7 @@ namespace Demo.PL.Controllers
 
                 //with AutoMApper 
                 
-                var result = _employeeService.CreateEmployee(departmentToCreated);
+                var result =await _employeeService.CreateEmployeeAsync(departmentToCreated);
                 if (result > 0)
                 {
                     message = $"Employee {EmployeeVM.Name} Created";
@@ -126,11 +128,11 @@ namespace Demo.PL.Controllers
         //Show client what is going to be deleted
         //baseUrl/Employee/Delete/{id}
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id is null)
                 return BadRequest();
-            var employee = _employeeService.GetEmployeeById(id.Value);
+            var employee = await _employeeService.GetEmployeeByIdAsync(id.Value);
             if (employee is null)
                 return NotFound();
 
@@ -140,9 +142,9 @@ namespace Demo.PL.Controllers
         //baseUrl/Employee/Delete/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var result = _employeeService.DeleteEmployee(id);
+            var result = await _employeeService.DeleteEmployeeAsync(id);
             var message = string.Empty;
             try
             {
@@ -171,11 +173,11 @@ namespace Demo.PL.Controllers
         //Edit: Request[Get]: baseUrl/Employee/Edit/{id}
         //
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id is null)
                 return BadRequest();
-            var employee = _employeeService.GetEmployeeById(id.Value);
+            var employee = await _employeeService.GetEmployeeByIdAsync(id.Value);
             if (employee is null)
                 return NotFound();
 
@@ -202,14 +204,14 @@ namespace Demo.PL.Controllers
         //Edit: request[Post]: baseUrl/Employee/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, EmployeeToUpdateDto employeeToUpdateDto)
+        public async Task<IActionResult> Edit(int id, EmployeeToUpdateDto employeeToUpdateDto)
         {
             if (!ModelState.IsValid)
                 return View(employeeToUpdateDto);
             var message = string.Empty;
             try
             {
-                var result = _employeeService.UpdateEmployee(employeeToUpdateDto);
+                var result = await _employeeService.UpdateEmployeeAsync(employeeToUpdateDto);
 
                 if (result > 0)
                     return RedirectToAction(nameof(Index));

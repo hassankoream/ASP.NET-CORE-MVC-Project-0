@@ -1,0 +1,43 @@
+﻿@model UserViewModel
+@{
+	ViewData["Title"] = "Edit";
+}
+
+<div class="row justify-content-center align-content-center mt-3">
+	<h1 class="col-8 my-4">Edit User</h1>
+	<form method="post" asp-controller="User" asp-action="@ViewData["Title"]" class="col-8" enctype="multipart/form-data">
+		<div asp-validation-summary="ModelOnly"></div>
+		<div class="form-group mb-3">
+			<label class="form-label" asp-for="FName"></label>
+			<input asp-for="FName" class="form-control" />
+			<span asp-validation-for="FName" class="text-danger"></span> @*Name is required*@
+		</div>
+		<div class="form-group mb-3">
+			@* <label class="form-label" for="Code"></label> *@
+			@* <input id="Code" name="Code" type="text" /> *@
+			<label class="form-label" asp-for="Email"></label>
+			<input asp-for="Email" class="form-control" />
+			<span asp-validation-for="Email" class="text-danger"></span>
+		</div>
+		<div class="form-group mb-3">
+			<label class="form-label" asp-for="LName"></label>
+			<textarea class="form-control" asp-for="LName"></textarea>
+			<span asp-validation-for="LName" class="text-danger"></span>
+		</div>
+
+
+
+
+		<div class="mt-4 m-auto">
+			<input class="btn btn-primary" type="submit" value="Edit" />
+			<a asp-controller="User" asp-action="Index" class="btn btn-outline-dark">Back to list</a>
+		</div>
+
+
+
+
+
+
+	</form>
+</div>
+

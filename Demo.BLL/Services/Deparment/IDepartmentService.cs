@@ -9,11 +9,10 @@ namespace Demo.BLL.Services.Deparment
 {
     public interface IDepartmentService
     {
-        IEnumerable<DepartmentToReturnDto> GetAllDeparments();
-        DepartmentDetailsToReturnDto? GetDepartmentById(int Id);
-
-        int CreateDepartment(DepartmentToCreateDto department);
-        int UpdateDepartment(DepartmentToUpdateDto department);
-        bool DeleteDepartment(int Id);
+        Task<IEnumerable<DepartmentToReturnDto>> GetAllDeparmentsAsync();
+        Task<DepartmentDetailsToReturnDto?> GetDepartmentByIdAsync(int Id);
+        Task<int> CreateDepartmentAsync(DepartmentToCreateDto department);
+        Task<int> UpdateDepartmentAsync(DepartmentToUpdateDto department);
+        Task<bool> DeleteDepartmentAsync(int Id);
     }
 }

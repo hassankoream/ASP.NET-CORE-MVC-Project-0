@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notes", "Notes", "{B92261AD
 		SessionNotes05.cs = SessionNotes05.cs
 		SessionNotes06.cs = SessionNotes06.cs
 		SessionNotes07.cs = SessionNotes07.cs
+		SessionNotes08.cs = SessionNotes08.cs
+		SessionNotes09.cs = SessionNotes09.cs
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLiveTime", "ServiceLiveTime\ServiceLiveTime.csproj", "{852A30E4-ED39-4B6D-869C-845A2A26A447}"

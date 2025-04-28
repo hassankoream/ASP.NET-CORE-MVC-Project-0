@@ -8,14 +8,14 @@ using Demo.DAL.Presistance.Repositories.Employees;
 
 namespace Demo.DAL.Presistance.UniteOfWork
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork : IAsyncDisposable
     {
         //Signatures
 
         IEmployeeRepository EmployeeRepository { get; }
         IDepartmentRepository departmentRepository { get; }
 
-        int Complete();
+       Task<int> CompleteAsync();
         //int Commit();
     }
 }

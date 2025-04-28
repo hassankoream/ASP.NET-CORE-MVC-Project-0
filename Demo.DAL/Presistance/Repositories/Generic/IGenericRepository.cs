@@ -10,9 +10,9 @@ namespace Demo.DAL.Presistance.Repositories.Generic
 {
     public interface IGenericRepository<T> where T : BaseEntity
     {
-        IEnumerable<T> GetAll(bool AsNoTracking = true);
+        Task<IEnumerable<T>> GetAllAsync(bool AsNoTracking = true);
+        Task<T?> GetByIdAsync(int id);
         IQueryable<T> GetAllQueryable();
-        T? GetById(int id);
 
         void AddEntity(T entity);
         void UpdateEntity(T entity);

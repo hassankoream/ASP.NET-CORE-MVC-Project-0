@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Demo.DAL.Entities.Departments;
 using Demo.DAL.Entities.Employees;
+using Demo.DAL.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Demo.DAL.Presistance.Data
 {
@@ -21,7 +24,7 @@ namespace Demo.DAL.Presistance.Data
      
      
      */
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : /*DbContext*/ IdentityDbContext<ApplicationUser>
     {
 
 
@@ -29,7 +32,7 @@ namespace Demo.DAL.Presistance.Data
         {
 
         }
-        //Old Approch without options and Dependency Injection
+        //Old Approach without options and Dependency Injection
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
         //    optionsBuilder.UseSqlServer("Server=.; Database=MVCProject01; Trusted_Connection=true; TrustedServerCertificate=true");
@@ -42,9 +45,24 @@ namespace Demo.DAL.Presistance.Data
 
             //modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+            /*
+             
+             Unable to create a 'DbContext' of type ''. The exception 'The entity type 'IdentityUserLogin<string>' requires a primary key to be defined. If you intended to use a keyless entity type, call 'HasNoKey' in 'OnModelCreating'. For more information on keyless entity types, see https://go.microsoft.com/fwlink/?linkid=2141943.' was thrown while attempting to create an instance. For the different patterns supported at design time, see https://go.microsoft.com/fwlink/?linkid=851728
+
+             
+             */
+
+            base.OnModelCreating(modelBuilder);
         }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        //No Need as IdentityDbContext here
+        //public DbSet<IdentityUser> Users { get; set; }
+        //public DbSet<IdentityRole> Roles { get; set; }
+
+
+
 
 
         /*
